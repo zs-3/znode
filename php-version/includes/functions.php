@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once __DIR__ . '/config.php';
 
 /**
  * Perform a MOFH API Request
@@ -51,6 +51,13 @@ function is_logged_in() {
 }
 
 /**
+ * Check if user is admin
+ */
+function is_admin() {
+    return isset($_SESSION['role']) && $_SESSION['role'] === 'ADMIN';
+}
+
+/**
  * Redirect with error message
  */
 function redirect_with_error($path, $message) {
@@ -97,4 +104,15 @@ function get_file_manager_link($username, $password) {
     }
     $p = base64_encode($out);
     return "https://filemanager.ai/new3/index.php?u=" . urlencode($username) . "&p=" . urlencode($p);
+}
+
+/**
+ * Send Email using plain PHP mail()
+ */
+function send_email($to, $subject, $body) {
+    $headers = "MIME-Version: 1.0" . "\r\n";
+    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+    $headers .= 'From: <noreply@' . $_SERVER['HTTP_HOST'] . '>' . "\r\n";
+
+    return mail($to, $subject, $body, $headers);
 }

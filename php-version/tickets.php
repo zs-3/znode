@@ -37,7 +37,7 @@ $tickets = $stmt->fetchAll();
                 </div>
             <?php else: ?>
                 <?php foreach ($tickets as $ticket): ?>
-                    <div class="p-4 flex items-center justify-between hover:bg-[#1E293B]/50 transition-colors">
+                    <a href="ticket_view.php?id=<?php echo e($ticket['id']); ?>" class="p-4 flex items-center justify-between hover:bg-[#1E293B]/50 transition-colors block">
                         <div>
                             <h3 class="font-medium"><?php echo e($ticket['subject']); ?></h3>
                             <p class="text-xs text-gray-500"><?php echo e($ticket['createdAt']); ?></p>
@@ -45,7 +45,7 @@ $tickets = $stmt->fetchAll();
                         <span class="px-2 py-1 rounded text-[10px] font-bold uppercase bg-indigo-500/10 text-indigo-400">
                             <?php echo e($ticket['status']); ?>
                         </span>
-                    </div>
+                    </a>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>

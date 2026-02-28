@@ -29,9 +29,13 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <i class="lucide-shield w-5 h-5"></i>
                 <span>SSL Certificates</span>
             </a>
-            <a href="tickets.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo $current_page == 'tickets.php' ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
+            <a href="tickets.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo in_array($current_page, ['tickets.php', 'ticket_create.php', 'ticket_view.php']) ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
                 <i class="lucide-ticket w-5 h-5"></i>
                 <span>Support Tickets</span>
+            </a>
+            <a href="forum.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo $current_page == 'forum.php' ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
+                <i class="lucide-message-square w-5 h-5"></i>
+                <span>Community Forum</span>
             </a>
         </nav>
 

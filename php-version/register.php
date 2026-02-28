@@ -24,10 +24,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['error'] = "Email already registered";
         } else {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $pdo->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-            $stmt->execute([$name, $email, $hashed_password]);
+            $token = bin2hex(random_bytes(32));
+            $stmt = $pdo->prepare("INSERT INTO users (name, email, password, verificationToken) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$name, $email, $hashed_password, $token]);
 
-            $_SESSION['success'] = "Registration successful. Please login.";
+            $verify_link = "http://" . $_SERVER['HTTP_HOST'] . BASE_URL . "/verify.php?token=" . $token;
+            $body = "<h1>Welcome to " . SITE_NAME . "</h1><p>Please click the link below to verify your email:</p><a href='$verify_link'>$verify_link</a>";
+            send_email($email, "Verify your email", $body);
+
+            $_SESSION['success'] = "Registration successful. Please check your email for verification link.";
             header("Location: login.php");
             exit;
         }
