@@ -7,35 +7,60 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <aside class="fixed inset-y-0 left-0 z-50 flex flex-col w-64 bg-[#111827] border-r border-[#1E293B]">
         <!-- Logo -->
         <div class="flex items-center h-16 px-4 border-b border-[#1E293B]">
-            <a href="index.php" class="flex items-center gap-2">
-                <div class="w-9 h-9 rounded-lg bg-gradient-primary flex items-center justify-center">
-                    <i class="lucide-server w-5 h-5 text-white"></i>
-                </div>
+            <a href="<?php echo BASE_URL; ?>/dashboard.php" class="flex items-center gap-2">
+                <?php if (defined('SITE_LOGO') && !empty(SITE_LOGO)): ?>
+                    <img src="<?php echo SITE_LOGO; ?>" alt="<?php echo SITE_NAME; ?>" class="h-9 w-9 rounded-lg">
+                <?php else: ?>
+                    <div class="w-9 h-9 rounded-lg bg-gradient-primary flex items-center justify-center">
+                        <i class="lucide-server w-5 h-5 text-white"></i>
+                    </div>
+                <?php endif; ?>
                 <span class="text-lg font-bold text-white"><?php echo SITE_NAME; ?></span>
             </a>
         </div>
 
         <!-- Navigation -->
         <nav class="flex-1 py-4 px-2 space-y-1 overflow-y-auto">
-            <a href="index.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo $current_page == 'index.php' ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
+            <a href="<?php echo BASE_URL; ?>/dashboard.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo $current_page == 'dashboard.php' ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
                 <i class="lucide-layout-dashboard w-5 h-5"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="hosting.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo in_array($current_page, ['hosting.php', 'hosting_create.php', 'hosting_details.php']) ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
+            <a href="<?php echo BASE_URL; ?>/hosting.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo in_array($current_page, ['hosting.php', 'hosting_create.php', 'hosting_details.php']) ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
                 <i class="lucide-hard-drive w-5 h-5"></i>
                 <span>Hosting Accounts</span>
             </a>
-            <a href="ssl.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo $current_page == 'ssl.php' ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
+            <a href="<?php echo BASE_URL; ?>/ssl.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo $current_page == 'ssl.php' ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
                 <i class="lucide-shield w-5 h-5"></i>
                 <span>SSL Certificates</span>
             </a>
-            <a href="tickets.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo in_array($current_page, ['tickets.php', 'ticket_create.php', 'ticket_view.php']) ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
+            <a href="<?php echo BASE_URL; ?>/tickets.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo in_array($current_page, ['tickets.php', 'ticket_create.php', 'ticket_view.php']) ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
                 <i class="lucide-ticket w-5 h-5"></i>
                 <span>Support Tickets</span>
             </a>
-            <a href="forum.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo $current_page == 'forum.php' ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
+            <a href="<?php echo BASE_URL; ?>/kb.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo in_array($current_page, ['kb.php', 'kb_category.php', 'kb_article.php']) ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
+                <i class="lucide-book-open w-5 h-5"></i>
+                <span>Knowledge Base</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>/forum.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo $current_page == 'forum.php' ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
                 <i class="lucide-message-square w-5 h-5"></i>
                 <span>Community Forum</span>
+            </a>
+            <div class="pt-4 pb-2 px-3 text-[10px] font-bold text-gray-500 uppercase tracking-wider">Developer Tools</div>
+            <a href="<?php echo BASE_URL; ?>/tools/base64.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo $current_page == 'base64.php' ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
+                <i class="lucide-file-code w-5 h-5"></i>
+                <span>Base64 Tool</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>/tools/case_converter.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo $current_page == 'case_converter.php' ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
+                <i class="lucide-type w-5 h-5"></i>
+                <span>Case Converter</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>/tools/color_tools.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo $current_page == 'color_tools.php' ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
+                <i class="lucide-palette w-5 h-5"></i>
+                <span>Color Tools</span>
+            </a>
+            <a href="<?php echo BASE_URL; ?>/tools/css_grid.php" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium <?php echo $current_page == 'css_grid.php' ? 'bg-[#818CF8] text-white shadow-md' : 'text-gray-400 hover:bg-[#1E293B] hover:text-white'; ?>">
+                <i class="lucide-layout-grid w-5 h-5"></i>
+                <span>CSS Grid</span>
             </a>
         </nav>
 

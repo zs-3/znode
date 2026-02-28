@@ -28,6 +28,35 @@ function mofh_api_request($endpoint, $data = [], $method = 'POST') {
     return json_decode($response, true);
 }
 
+function mofh_suspend_account($username, $reason = "Suspended") {
+    $result = mofh_api_request("suspendacct.php", [
+        'user' => $username,
+        'reason' => $reason
+    ]);
+    return isset($result['status']) && $result['status'] == 1;
+}
+
+function mofh_unsuspend_account($username) {
+    $result = mofh_api_request("unsuspendacct.php", [
+        'user' => $username
+    ]);
+    return isset($result['status']) && $result['status'] == 1;
+}
+
+function mofh_delete_account($username) {
+    $result = mofh_api_request("terminateto.php", [
+        'user' => $username
+    ]);
+    return isset($result['status']) && $result['status'] == 1;
+}
+
+function mofh_get_user_info($username) {
+    $result = mofh_api_request("getuserinfo.php", [
+        'user' => $username
+    ]);
+    return $result;
+}
+
 /**
  * Get current user
  */
@@ -115,4 +144,35 @@ function send_email($to, $subject, $body) {
     $headers .= 'From: <noreply@' . $_SERVER['HTTP_HOST'] . '>' . "\r\n";
 
     return mail($to, $subject, $body, $headers);
+}
+
+/**
+ * VistaPanel Login and Scraping
+ */
+function vp_login($username, $password) {
+    $url = MOFH_CPANEL_URL . "/login.php";
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'uname' => $username,
+        'passwd' => $password,
+        'seeesurf' => '567811917014474432'
+    ]));
+    curl_setopt($ch, CURLOPT_HEADER, true);
+    $response = curl_exec($ch);
+
+    preg_match('/PHPSESSID=([^;]+)/', $response, $matches);
+    return $matches[1] ?? null;
+}
+
+function vp_create_db($session, $dbname) {
+    $url = MOFH_CPANEL_URL . "/panel/indexpl.php?option=mysql&cmd=create";
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['db' => $dbname]));
+    curl_setopt($ch, CURLOPT_COOKIE, "PHPSESSID=$session");
+    curl_exec($ch);
+    return true;
 }

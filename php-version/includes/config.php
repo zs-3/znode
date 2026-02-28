@@ -12,7 +12,9 @@ define('MOFH_CPANEL_URL', 'https://cpanel.byethost.com');
 
 // App Settings
 define('SITE_NAME', 'ZNode PHP');
+define('SITE_LOGO', '');
 define('BASE_URL', '/php-version');
+define('APP_ROOT', dirname(__DIR__));
 
 // Error reporting
 error_reporting(E_ALL);

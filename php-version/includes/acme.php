@@ -58,6 +58,7 @@ class ACME {
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($jws));
         curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/jose+json']);
@@ -72,5 +73,18 @@ class ACME {
             "body" => json_decode($body, true),
             "headers" => $headers
         ];
+    }
+
+    /**
+     * Get Nonce from ACME server
+     */
+    public function getNonce($url) {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        $response = curl_exec($ch);
+        preg_match('/replay-nonce: (.*)/i', $response, $matches);
+        return trim($matches[1] ?? '');
     }
 }

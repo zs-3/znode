@@ -15,6 +15,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password'])) {
+            // Check for email verification
+            if (!$user['emailVerified']) {
+                $_SESSION['error'] = "Please verify your email address before logging in.";
+                header("Location: login.php");
+                exit;
+            }
+
+            // Check for 2FA
+            if (!empty($user['twoFactorSecret'])) {
+                $_SESSION['temp_user_id'] = $user['id'];
+                header("Location: login_2fa.php");
+                exit;
+            }
+
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['email'] = $user['email'];
             $_SESSION['name'] = $user['name'];
@@ -47,10 +61,14 @@ include 'templates/header.php';
         </div>
 
         <div class="relative z-10 flex flex-col justify-center px-16">
-            <a href="/" class="flex items-center gap-2 mb-12">
-                <div class="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center">
-                    <i class="lucide-server w-6 h-6 text-white"></i>
-                </div>
+            <a href="index.php" class="flex items-center gap-2 mb-12">
+                <?php if (defined('SITE_LOGO') && !empty(SITE_LOGO)): ?>
+                    <img src="<?php echo SITE_LOGO; ?>" alt="<?php echo SITE_NAME; ?>" class="h-12 w-12 rounded-xl">
+                <?php else: ?>
+                    <div class="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center">
+                        <i class="lucide-server w-6 h-6 text-white"></i>
+                    </div>
+                <?php endif; ?>
                 <span class="text-2xl font-bold text-white"><?php echo SITE_NAME; ?></span>
             </a>
 
